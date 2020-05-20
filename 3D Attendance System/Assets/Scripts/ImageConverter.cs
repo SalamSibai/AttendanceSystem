@@ -16,22 +16,13 @@ public class ImageConverter : MonoBehaviour
     void Start()
     {
         bytes = myTexture.EncodeToPNG();    //encodes to a jpg byte array.
-        //encodedText = Convert.ToBase64String(bytes);
-        
-        if(bytes == null)
-        {
-            Debug.Log("what"); 
-        }
-        else
-        {
-            Debug.Log("yep"); 
-    
-        }
-        //Debug.Log(encodedText);
 
-        // tex.LoadRawTextureData(myTexture.EncodeToJPG());
-        // tex.Apply();
-        pic.texture = myTexture; 
+        Texture2D decodedTexture = new Texture2D(1920,1080); 
+
+
+        decodedTexture.LoadImage(bytes); //decode back to a texture to show 
+        decodedTexture.Apply();
+        pic.texture = decodedTexture; 
 
     }
 
