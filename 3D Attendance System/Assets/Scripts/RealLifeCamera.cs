@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI; 
+using System.IO; 
 
 
 public class RealLifeCamera : MonoBehaviour
@@ -66,4 +67,28 @@ public class RealLifeCamera : MonoBehaviour
         background.rectTransform.localEulerAngles = new Vector3(0,0, orient);
 
     }
+
+    IEnumerator TakePicture()
+    {
+        yield return new WaitForEndOfFrame();
+
+        Texture2D photo = new Texture2D(deviceCam.width, deviceCam.height);
+        photo.SetPixels(deviceCam.GetPixels());
+        photo.Apply();
+        
+        byte[] bytes = photo.EncodeToPNG(); 
+
+        //push texture to list
+        //encode to text
+
+        File.WriteAllBytes(Application.dataPath + "/photo.png", bytes);
+        Debug.Log("picture captured");
+    
+    }
+
+    public void Capture()
+    {
+        StartCoroutine(TakePicture());
+    }
+
 }

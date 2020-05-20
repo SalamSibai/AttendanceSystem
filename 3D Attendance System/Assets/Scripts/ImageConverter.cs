@@ -15,7 +15,7 @@ public class ImageConverter : MonoBehaviour
 
     void Start()
     {
-        bytes = myTexture.EncodeToJPG();    //encodes to a jpg byte array.
+        bytes = myTexture.EncodeToPNG();    //encodes to a jpg byte array.
         //encodedText = Convert.ToBase64String(bytes);
         
         if(bytes == null)
@@ -31,7 +31,7 @@ public class ImageConverter : MonoBehaviour
 
         // tex.LoadRawTextureData(myTexture.EncodeToJPG());
         // tex.Apply();
-        // pic.texture = tex; 
+        pic.texture = myTexture; 
 
     }
 
