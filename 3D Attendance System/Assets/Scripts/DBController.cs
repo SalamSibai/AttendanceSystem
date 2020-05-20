@@ -50,7 +50,8 @@ public class DBController : MonoBehaviour
 
 
     ////////////////////////////////////////////////////////////////////////
-    //Text fields to print names when logged in
+    //Text fields & input fields 
+
     public Text ErrorMsg; 
     public Text EmailMismatch;
     public InputField emailInput;
@@ -68,6 +69,7 @@ public class DBController : MonoBehaviour
     public Canvas InformationCanvas; 
     public Canvas thankYouCanvas; 
     public Canvas addUserCanvas;
+    public Canvas welcomeCanvas; 
 
     
     void Start()
@@ -79,42 +81,47 @@ public class DBController : MonoBehaviour
     public void LoginPage()
     {
         //hide welcome canvas
+        welcomeCanvas.GetComponent<Canvas>().enabled = false;
         //show login canvas
+        emailInsertCanvas.GetComponent<Canvas>().enabled = true; 
+
     }
 
-    public void SignInPage()
-    {
-        //hide welcome canvas
-        //show sign up canvas
-    }
     public void BackToWelcome()
     {
-        //hide all canvases except welcome canvas
+        addUserCanvas.GetComponent<Canvas>().enabled = false; 
+        emailInsertCanvas.GetComponent<Canvas>().enabled = false; 
+        welcomeCanvas.GetComponent<Canvas>().enabled = true;
+
     }
     public void Login()
     {
         if(emailInput.text == "")
         {
             ErrorMsg.GetComponent<Text>().enabled = true;
+
         }
         else
         {
             ErrorMsg.GetComponent<Text>().enabled = false;
             string email = emailInput.text;
             StartCoroutine(Getdata(email));
+
         }
     }
     public void addUser()
     {
         //emailInsertCanvas.GetComponent<Canvas>().enabled = false; 
         //welcome canvas
-
+        welcomeCanvas.GetComponent<Canvas>().enabled = false;
         addUserCanvas.GetComponent<Canvas>().enabled = true;
+
     }
 
     public void SubmitNewUser()
     {
         StartCoroutine(userSignUp());
+
     }
 
     IEnumerator userSignUp()
@@ -133,25 +140,27 @@ public class DBController : MonoBehaviour
         
     }
 
-    public void backToLogin()
+    public void LoginBackButton() //The back button on the information screen
     {
         emailFound = false; 
         entry = false;
         InformationCanvas.GetComponent<Canvas>().enabled = false; 
-        emailInsertCanvas.GetComponent<Canvas>().enabled = true;    
+        BackToWelcome();
+
     }
 
     public void exit()
     {
         StartCoroutine(OnExit());
+
     }
 
     IEnumerator OnExit()
     {        
         firebaseQueue.ForceClearQueue();
-        //yield return new WaitForSeconds(2f); 
         InformationCanvas.GetComponent<Canvas>().enabled = false;
         thankYouCanvas.GetComponent<Canvas>().enabled = true;
+
         thankYouText.text = "Thank you for attending, " + retname +"!"; 
 
         firebaseQueue.AddQueueUpdate(firebase.Child (wantedUser.ToString(), true), "{\"login\": false}");
@@ -161,12 +170,10 @@ public class DBController : MonoBehaviour
         emailFound = false;
         entry = false;
 
-
-
-        yield return new WaitForSeconds(4f); 
+        yield return new WaitForSeconds(3f); 
 
         thankYouCanvas.GetComponent<Canvas>().enabled = false; 
-        emailInsertCanvas.GetComponent<Canvas>().enabled = true;
+        welcomeCanvas.GetComponent<Canvas>().enabled = true;
 
         Debug.Log("Exit done");
 
@@ -188,7 +195,6 @@ public class DBController : MonoBehaviour
 
     IEnumerator Getdata(string email)       
     {
-        Debug.Log("email found: " + emailFound);
         EmailMismatch.GetComponent<Text>().enabled = false;
         ErrorMsg.GetComponent<Text>().enabled = false;
 
@@ -207,24 +213,26 @@ public class DBController : MonoBehaviour
                 Debug.Log("Successful retrieval");
                 wantedUser = i;
                 break;
+
             }         
         }
 
         if(emailFound)
         {
             GetLogin(wantedUser.ToString());
-            yield return new WaitForSeconds(1f);
+            GetName(wantedUser.ToString());
+            yield return new WaitForSeconds(2f);
 
             if(entry) //login is true
             {
+                Debug.Log("Already signed in");
                 exit(); 
+
             }
             else
             {
                 ChangeLogin(wantedUser);  
-                GetName(wantedUser.ToString());
                 UpdateTime(wantedUser);
-                //get name & timestamp + print them in a textfield 
 
                 yield return new WaitForSeconds(1f);    //needed for name retrieval 
 
@@ -232,8 +240,8 @@ public class DBController : MonoBehaviour
                 name.text = "Welcome " + retname +"!"; 
                 timeOfLogin.text ="Entry time: " + timeOfInOut;
                 loggedEmail.text = "Email: " + retmail;
-            }
 
+            }
         }
 
         else
@@ -255,22 +263,21 @@ public class DBController : MonoBehaviour
     private void Getmail(string id)     
     {
         RestClient.Get($"https://attendancesystem-motf.firebaseio.com/attendees/"+id+".json").Then(response => {
-            Debug.Log("Successful retrieval");
 
             JsonData jsonvale = JsonMapper.ToObject(response.Text);
-            Debug.Log(jsonvale["email"]);
             retmail = (string) jsonvale["email"];
-        
+
         });
     }
 
     private void GetLogin(string id)    //gets login status.
     {
-        RestClient.Get($"https://https://attendancesystem-motf.firebaseio.com/attendees/" + id + ".json").Then(response => {
+        RestClient.Get($"https://attendancesystem-motf.firebaseio.com/attendees/"+id+".json").Then(response => {
             
             JsonData jsonvale = JsonMapper.ToObject(response.Text);
             Debug.Log("Logged in: " + jsonvale["login"]);
             entry = (bool) jsonvale["login"];
+
         });
     }
 
@@ -287,7 +294,6 @@ public class DBController : MonoBehaviour
     private void UpdateTime(int id)
     {
         timeOfInOut = DateTime.Now.ToShortTimeString(); 
-        //firebaseQueue.AddQueueUpdate(firebase.Child (id.ToString(), true), "{\"timeStamp\" : " + timeOfInOut +" }");   //Timestamp update is not working 
         firebaseQueue.AddQueueSetTimeStamp(firebase.Child (id.ToString(), true), "timeStamp");
 
     }
@@ -295,21 +301,19 @@ public class DBController : MonoBehaviour
     private void ChangeLogin( int id)
     {
 
-        if(entry)
-        {
-            firebaseQueue.AddQueueUpdate(firebase.Child (id.ToString(), true), "{\"login\": false}");
-            Debug.Log("changed to false successfuly");
-        }
+        // if(entry)
+        // {
+        //     firebaseQueue.AddQueueUpdate(firebase.Child (id.ToString(), true), "{\"login\": false}");
+        //     Debug.Log("changed to false successfuly");
+        // }
 
-        else
-        {
+        // else
+        // {
             firebaseQueue.AddQueueUpdate(firebase.Child (id.ToString(), true), "{\"login\": true}");
             Debug.Log("changed to true successfuly");
-        }
- 
+        //}
 
         Debug.Log("Logged in: " + !entry);
-
 
     }
 
@@ -321,6 +325,7 @@ public class DBController : MonoBehaviour
             JsonData jsonvale = JsonMapper.ToObject(response.Text);
             Debug.Log("Count: " + jsonvale.Count);
             usersCount = jsonvale.Count;
+
         });
     }
 
@@ -334,6 +339,7 @@ public class DBController : MonoBehaviour
 
         public User()
         {
+
         }
 
         public User(string userId, string name, string email, string timeStamp, bool login) // create new user 
@@ -343,6 +349,7 @@ public class DBController : MonoBehaviour
             this.email = email;
             this.timeStamp = timeStamp;
             this.login = login;
+
         }
     }
 }

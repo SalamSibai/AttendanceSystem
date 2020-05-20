@@ -314,7 +314,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9607844, g: 0.6627451, b: 0.5058824, a: 1}
+  m_Color: {r: 0.9568628, g: 0.9215687, b: 0.8745099, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -413,7 +413,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: LOGOUT
+  m_Text: EXIT
 --- !u!222 &167163667
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -583,13 +583,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 295099314}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 61.6, y: 14.3, z: 90.56295}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 229.93494, y: 3.015933, z: -61.142952}
   m_LocalScale: {x: 282.65994, y: 155.49048, z: 1.3424}
   m_Children:
   - {fileID: 1041608645}
-  m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_Father: {fileID: 1659185214}
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &297913967
 GameObject:
@@ -751,7 +751,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 298462738}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 473468823}
+        m_MethodName: exit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &298462738
@@ -904,7 +915,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 239, y: 198}
+  m_AnchoredPosition: {x: 239, y: 171}
   m_SizeDelta: {x: 398.8, y: 118.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &330304505
@@ -920,7 +931,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9686275, g: 0.8431373, b: 0.8705883, a: 1}
+  m_Color: {r: 0.9056604, g: 0.62057674, b: 0.5767177, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -931,7 +942,7 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: ec6b47f99f1484beca8d704f8a2ff97a, type: 3}
     m_FontSize: 60
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 6
     m_MaxSize: 60
     m_Alignment: 4
@@ -1295,11 +1306,23 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 792256d93f3b82f49b391426bf35100c, type: 2}
+    - target: {fileID: 304014376, guid: 5f84612fa669058409825f146c685e94, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 7760b6775b277fd49bdef151c49c6431, type: 2}
     - target: {fileID: 3007476113215873803, guid: 5f84612fa669058409825f146c685e94,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 1e5919910dd086d41bef6674389ddb28, type: 2}
+    - target: {fileID: 1983416498, guid: 5f84612fa669058409825f146c685e94, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 7760b6775b277fd49bdef151c49c6431, type: 2}
+    - target: {fileID: 940935263, guid: 5f84612fa669058409825f146c685e94, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 6bf88102ae4e77f4a93277212c2c62f0, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5f84612fa669058409825f146c685e94, type: 3}
 --- !u!1 &473468822
@@ -1344,6 +1367,7 @@ MonoBehaviour:
   InformationCanvas: {fileID: 1964625883}
   thankYouCanvas: {fileID: 1157898057}
   addUserCanvas: {fileID: 1108534940}
+  welcomeCanvas: {fileID: 1370951706}
 --- !u!4 &473468824
 Transform:
   m_ObjectHideFlags: 0
@@ -1356,7 +1380,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &511566091
 GameObject:
@@ -1441,7 +1465,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 473468823}
-        m_MethodName: Login
+        m_MethodName: addUser
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1925,6 +1949,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: d8f13b2372e7d4242b611be6b6ce2577, type: 2}
+    - target: {fileID: 304014376, guid: 5f84612fa669058409825f146c685e94, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 6bf88102ae4e77f4a93277212c2c62f0, type: 2}
     - target: {fileID: 3007476113215873803, guid: 5f84612fa669058409825f146c685e94,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -2013,7 +2041,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 690252890}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 473468823}
+        m_MethodName: LoginPage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &690252890
@@ -2029,7 +2068,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9607844, g: 0.6627451, b: 0.5058824, a: 1}
+  m_Color: {r: 0.9607844, g: 0.92549026, b: 0.8745099, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -2142,7 +2181,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &728561705
 GameObject:
@@ -2329,11 +2368,23 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 1e5919910dd086d41bef6674389ddb28, type: 2}
+    - target: {fileID: 304014376, guid: 5f84612fa669058409825f146c685e94, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 6bf88102ae4e77f4a93277212c2c62f0, type: 2}
     - target: {fileID: 3007476113215873803, guid: 5f84612fa669058409825f146c685e94,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 633e32da3a2591d478cf7fee43d2dcf1, type: 2}
+    - target: {fileID: 1983416498, guid: 5f84612fa669058409825f146c685e94, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 6bf88102ae4e77f4a93277212c2c62f0, type: 2}
+    - target: {fileID: 940935263, guid: 5f84612fa669058409825f146c685e94, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 7760b6775b277fd49bdef151c49c6431, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5f84612fa669058409825f146c685e94, type: 3}
 --- !u!4 &811291384 stripped
@@ -2423,7 +2474,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 851195755}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 473468823}
+        m_MethodName: BackToWelcome
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &851195755
@@ -3111,7 +3173,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1054498509}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
@@ -3245,7 +3307,7 @@ RectTransform:
   - {fileID: 1474712744}
   - {fileID: 1669541976}
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -3305,7 +3367,7 @@ RectTransform:
   m_Children:
   - {fileID: 607201049}
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -3706,7 +3768,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1258170249}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -3737,7 +3799,7 @@ RectTransform:
   - {fileID: 297913968}
   - {fileID: 340799628}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -3895,7 +3957,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1333190805
 GameObject:
@@ -4041,7 +4103,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1370951703}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -4070,7 +4132,7 @@ RectTransform:
   - {fileID: 690252888}
   - {fileID: 2088004460}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -4387,7 +4449,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1432091216}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 473468823}
+        m_MethodName: LoginBackButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1432091216
@@ -4622,7 +4695,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1474712743}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
@@ -4784,7 +4857,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9607844, g: 0.6627451, b: 0.5058824, a: 1}
+  m_Color: {r: 0.9607844, g: 0.9215687, b: 0.8745099, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -4894,7 +4967,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1589071036}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 473468823}
+        m_MethodName: BackToWelcome
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1589071036
@@ -5196,8 +5280,11 @@ Transform:
   - {fileID: 1689326132}
   - {fileID: 744193451}
   - {fileID: 811291384}
+  - {fileID: 295099318}
+  - {fileID: 5276569512326923431}
+  - {fileID: 2956436566931803611}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1669541975
 GameObject:
@@ -5243,7 +5330,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1669541975}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
@@ -5464,7 +5551,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myTexture: {fileID: 2800000, guid: 7fe4bdf2011aab24f85f820f298ae64b, type: 3}
-  pic: {fileID: 1318410357}
+  pic: {fileID: 1466934670}
 --- !u!4 &1764284513
 Transform:
   m_ObjectHideFlags: 0
@@ -5477,7 +5564,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1808708123
 GameObject:
@@ -5572,7 +5659,7 @@ RectTransform:
   - {fileID: 1318410356}
   - {fileID: 640735438}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -5869,7 +5956,7 @@ Transform:
   m_Children:
   - {fileID: 922854165}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1964625880
 GameObject:
@@ -5968,7 +6055,7 @@ RectTransform:
   - {fileID: 1611509195}
   - {fileID: 307995988}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -6135,7 +6222,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2088004462}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 473468823}
+        m_MethodName: addUser
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &2088004462
@@ -6151,7 +6249,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9607844, g: 0.6627451, b: 0.5058824, a: 1}
+  m_Color: {r: 0.9607844, g: 0.9215687, b: 0.8745099, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -6424,11 +6522,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4175910150328525904}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -130.7, y: -22.3, z: 85}
+  m_LocalPosition: {x: 37.634933, y: -33.58407, z: -66.7059}
   m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_Father: {fileID: 1659185214}
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4155283535074037804
 GameObject:
@@ -6556,11 +6654,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2296696059276269113}
   m_LocalRotation: {x: -0, y: -0.19521838, z: -0, w: 0.98075986}
-  m_LocalPosition: {x: -133.17, y: -8.9, z: 56}
+  m_LocalPosition: {x: 35.164932, y: -20.184067, z: -95.7059}
   m_LocalScale: {x: 0.25109702, y: 0.25109702, z: 0.25109702}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_Father: {fileID: 1659185214}
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5362322894822165550
 MeshFilter:
