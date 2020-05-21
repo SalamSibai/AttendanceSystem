@@ -1,6 +1,4 @@
-﻿
-
-//Structure goes like this: 
+﻿//Structure goes like this: 
 
     //Login: 
     // 1) User writes email address in email section
@@ -47,6 +45,7 @@ public class DBController : MonoBehaviour
     string timeOfInOut; 
     int wantedUser; 
     bool emailFound; 
+    bool signInFailed;
 
 
     ////////////////////////////////////////////////////////////////////////
@@ -61,7 +60,10 @@ public class DBController : MonoBehaviour
     public Text thankYouText; 
     public InputField addedName; 
     public InputField addedEmail;
-
+    public Text notUniqueError; 
+    public Text noEmailEntered; 
+    public Text signInWait; 
+    public Text loginWait; 
     ////////////////////////////////////////////////////////////////////////
     //Canavases
 
@@ -89,14 +91,16 @@ public class DBController : MonoBehaviour
 
     public void BackToWelcome()
     {
-        addUserCanvas.GetComponent<Canvas>().enabled = false; 
-        emailInsertCanvas.GetComponent<Canvas>().enabled = false; 
+        Debug.Log("back to front page");
         welcomeCanvas.GetComponent<Canvas>().enabled = true;
+        addUserCanvas.GetComponent<Canvas>().enabled = false; 
+        InformationCanvas.GetComponent<Canvas>().enabled = false;
+        emailInsertCanvas.GetComponent<Canvas>().enabled = false; 
 
     }
     public void Login()
     {
-        if(emailInput.text == "")
+        if(string.IsNullOrWhiteSpace(emailInput.text))
         {
             ErrorMsg.GetComponent<Text>().enabled = true;
 
@@ -104,8 +108,7 @@ public class DBController : MonoBehaviour
         else
         {
             ErrorMsg.GetComponent<Text>().enabled = false;
-            string email = emailInput.text;
-            StartCoroutine(Getdata(email));
+            StartCoroutine(Getdata(emailInput.text));
 
         }
     }
@@ -125,19 +128,58 @@ public class DBController : MonoBehaviour
     }
 
     IEnumerator userSignUp()
-    {
-        NewUser(addedName.text, addedEmail.text);
-        yield return new WaitForSeconds(1f); 
-        addUserCanvas.GetComponent<Canvas>().enabled = false;
-        InformationCanvas.GetComponent<Canvas>().enabled = true; 
+    {   
+        signInFailed = false;
+        notUniqueError.GetComponent<Text>().enabled = false;
+        noEmailEntered.GetComponent<Text>().enabled = false;
 
-        wantedUser = usersCount;
-        timeOfInOut = DateTime.Now.ToShortTimeString(); 
+        if(string.IsNullOrWhiteSpace(addedEmail.text))      //check if there is an email inserted
+        {
+            //enter email
+            signInFailed = true;
+            noEmailEntered.GetComponent<Text>().enabled = true;
+            addedEmail.text = null; 
 
-        name.text = "Welcome " + addedName.text +"!"; 
-        timeOfLogin.text ="Entry time: " + timeOfInOut;
-        loggedEmail.text = "Email: " + addedEmail.text;
-        
+        }
+
+        if(!signInFailed)
+        {
+            for(int i = 0; i<usersCount; i++)
+            {
+                Getmail(i.ToString());
+                signInWait.GetComponent<Text>().enabled = true;
+                yield return new WaitForSeconds(1f);
+
+                if(retmail == addedEmail.text)
+                {
+                    //email already registered.
+                    signInFailed = true;
+                    notUniqueError.GetComponent<Text>().enabled = true;
+                    addedEmail.text = null; 
+                    signInWait.GetComponent<Text>().enabled = false;
+
+                    break;
+                } 
+            }
+
+        }
+
+        if(!signInFailed)
+        {
+            signInWait.GetComponent<Text>().enabled = false;
+
+            NewUser(addedName.text, addedEmail.text);
+            yield return new WaitForSeconds(1f); 
+            addUserCanvas.GetComponent<Canvas>().enabled = false;
+            InformationCanvas.GetComponent<Canvas>().enabled = true; 
+
+            wantedUser = usersCount;
+            timeOfInOut = DateTime.Now.ToShortTimeString(); 
+
+            name.text = "Welcome " + addedName.text +"!"; 
+            timeOfLogin.text ="Entry time: " + timeOfInOut;
+            loggedEmail.text = "Email: " + addedEmail.text;
+        }
     }
 
     public void LoginBackButton() //The back button on the information screen
@@ -159,6 +201,8 @@ public class DBController : MonoBehaviour
     {        
         firebaseQueue.ForceClearQueue();
         InformationCanvas.GetComponent<Canvas>().enabled = false;
+        emailInsertCanvas.GetComponent<Canvas>().enabled = false;
+
         thankYouCanvas.GetComponent<Canvas>().enabled = true;
 
         thankYouText.text = "Thank you for attending, " + retname +"!"; 
@@ -195,18 +239,22 @@ public class DBController : MonoBehaviour
 
     IEnumerator Getdata(string email)       
     {
+        loginWait.GetComponent<Text>().enabled = true;
+
         EmailMismatch.GetComponent<Text>().enabled = false;
         ErrorMsg.GetComponent<Text>().enabled = false;
 
-        yield return new WaitForSeconds(0.2f);
+        // yield return new WaitForSeconds(0.2f);
 
-        emailInput.text = "Enter Email...";
-        emailInsertCanvas.GetComponent<Canvas>().enabled = false;    
+        // //emailInsertCanvas.GetComponent<Canvas>().enabled = false;    
 
         for (int i = 0; i < usersCount; i++)
         {
+
+            Debug.Log("checking");
             Getmail(i.ToString());  //Gets the emails
             yield return new WaitForSeconds(1f);
+
             if (retmail == email && retmail != null )    //checks if the email "retmail" is equal to the email adress we are checking for && that emails exist in the db
             {
                 emailFound = true; 
@@ -217,15 +265,20 @@ public class DBController : MonoBehaviour
             }         
         }
 
+
         if(emailFound)
         {
             GetLogin(wantedUser.ToString());
             GetName(wantedUser.ToString());
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1f);
 
             if(entry) //login is true
             {
                 Debug.Log("Already signed in");
+                emailInput.text = null;
+                loginWait.GetComponent<Text>().enabled = false;
+
+
                 exit(); 
 
             }
@@ -235,6 +288,10 @@ public class DBController : MonoBehaviour
                 UpdateTime(wantedUser);
 
                 yield return new WaitForSeconds(1f);    //needed for name retrieval 
+                loginWait.GetComponent<Text>().enabled = false;
+                emailInput.text = null;
+                emailInsertCanvas.GetComponent<Canvas>().enabled = false;
+
 
                 InformationCanvas.GetComponent<Canvas>().enabled = true; 
                 name.text = "Welcome " + retname +"!"; 
@@ -246,15 +303,20 @@ public class DBController : MonoBehaviour
 
         else
         {
-            emailInsertCanvas.GetComponent<Canvas>().enabled = true;    
+    
+            loginWait.GetComponent<Text>().enabled = false;
+            emailInput.text = null;
+
             EmailMismatch.GetComponent<Text>().enabled = true;
-            
+            emailInput.text = null;
+
             Debug.Log("email unavailable");
         }
 
 
         entry = false;
         emailFound = false;
+
         yield return new WaitForSeconds(2f);
         Debug.Log("END OF COROUTINE");
 
