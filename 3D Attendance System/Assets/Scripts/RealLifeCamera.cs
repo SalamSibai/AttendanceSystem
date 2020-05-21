@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿//We can handle image pushing to the db from this script
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI; 
@@ -11,7 +13,6 @@ public class RealLifeCamera : MonoBehaviour
     private WebCamTexture deviceCam;
     Texture defaultBackground; 
     public RawImage background; 
-
     public AspectRatioFitter fit; 
     float scaleY; 
 
@@ -22,7 +23,6 @@ public class RealLifeCamera : MonoBehaviour
 
         if(devices.Length == 0 )
         {
-            //no cam detected. no need for image. 
             camAvailable = false;
             return; 
         }
@@ -78,10 +78,8 @@ public class RealLifeCamera : MonoBehaviour
         
         byte[] bytes = photo.EncodeToPNG(); 
 
-        //push texture to list
-        //encode to text
 
-        File.WriteAllBytes(Application.dataPath + "/photo.png", bytes);
+        //File.WriteAllBytes(Application.dataPath + "/photo.png", bytes);
         Debug.Log("picture captured");
     
     }
