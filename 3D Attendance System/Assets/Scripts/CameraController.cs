@@ -14,16 +14,18 @@ public class CameraController : MonoBehaviour
     public Text pictureAlreadySaved;
     public Text noPictureFound; 
 
+
     public void DeviceCamOn()
     {
-        if(!controller.GetComponent<DBController>().pictureTaken)
+        if(!controller.GetComponent<DBController>().pictureTaken && !controller.GetComponent<DBController>().done)
         {
             noPictureFound.GetComponent<Text>().enabled = false;
             signUpCanvas.GetComponent<Canvas>().enabled = false;
             StartCoroutine(camSwitch());
         }
-        else
+        else if(controller.GetComponent<DBController>().done)
         {
+           
             pictureAlreadySaved.GetComponent<Text>().enabled = true;
         }
     }
@@ -34,11 +36,12 @@ public class CameraController : MonoBehaviour
         yield return new WaitForSeconds(2f); 
         realLifeCamera.SetActive(true); 
         realLifeCanvas.GetComponent<Canvas>().enabled = true; 
+        controller.GetComponent<DBController>().pictureTaken = true;
     }
 
     void Update()
     {
-        if(controller.GetComponent<DBController>().pictureTaken)
+        if(controller.GetComponent<DBController>().done)
         {
             StartCoroutine(switchBack());
         }
@@ -51,8 +54,10 @@ public class CameraController : MonoBehaviour
         yield return new WaitForSeconds(2f);
         sceneCamera.SetActive(true);
         yield return new WaitForSeconds(1.5f);
-        signUpCanvas.GetComponent<Canvas>().enabled = true;
+        if(controller.GetComponent<DBController>().pictureTaken)
+        {
+            signUpCanvas.GetComponent<Canvas>().enabled = true;
+        }
         controller.GetComponent<DBController>().pictureTaken = false;
-
     }
 }

@@ -50,6 +50,7 @@ public class DBController : MonoBehaviour
     bool emailFound; 
     bool signInFailed;
     public bool pictureTaken;
+    public bool done; 
 
     ////////////////////////////////////////////////////////////////////////
     //Gameobject references
@@ -108,7 +109,6 @@ public class DBController : MonoBehaviour
         {
             camAvailable = false;
             return; 
-
         }
         
         for(int i=0; i < devices.Length ; i++)
@@ -121,7 +121,6 @@ public class DBController : MonoBehaviour
 
         deviceCam.Play();
         background.texture = deviceCam; 
-
         camAvailable = true;
 
 
@@ -177,13 +176,11 @@ public class DBController : MonoBehaviour
         if(string.IsNullOrWhiteSpace(emailInput.text))
         {
             ErrorMsg.GetComponent<Text>().enabled = true;
-
         }
         else
         {
             ErrorMsg.GetComponent<Text>().enabled = false;
             StartCoroutine(Getdata(emailInput.text));
-
         }
     }
 
@@ -195,6 +192,7 @@ public class DBController : MonoBehaviour
         notUniqueError.GetComponent<Text>().enabled = false;
         noEmailEntered.GetComponent<Text>().enabled = false;
         noImageTaken.GetComponent<Text>().enabled = false;
+        imageAlreadyTaken.GetComponent<Text>().enabled = false;
         addUserCanvas.GetComponent<Canvas>().enabled = true;
 
     }
@@ -240,6 +238,7 @@ public class DBController : MonoBehaviour
 
     IEnumerator TakePicture()
     {
+        noImageTaken.GetComponent<Text>().enabled = false;
         panel.GetComponent<Animator>().SetTrigger("Capture");
         yield return new WaitForSeconds(3.5f); 
 
@@ -253,7 +252,7 @@ public class DBController : MonoBehaviour
         retimage = Convert.ToBase64String(bytes); 
 
         Debug.Log("picture captured");
-        pictureTaken = true;
+        done = true;
     
     }
 
@@ -265,7 +264,6 @@ public class DBController : MonoBehaviour
     IEnumerator userSignUp()
     {   
         signInFailed = false;
-
 
         if(string.IsNullOrWhiteSpace(addedEmail.text))      //check if there is an email inserted
         {
@@ -279,11 +277,10 @@ public class DBController : MonoBehaviour
             noEmailEntered.GetComponent<Text>().enabled = false;
         }
 
-        if(!pictureTaken)
+        if(!done)
         {
             signInFailed = true; 
             noImageTaken.GetComponent<Text>().enabled = true;
-
         }
         else
         {
@@ -294,6 +291,7 @@ public class DBController : MonoBehaviour
         {
             noImageTaken.GetComponent<Text>().enabled = false;
             noEmailEntered.GetComponent<Text>().enabled = false;
+            imageAlreadyTaken.GetComponent<Text>().enabled = false; 
 
             signInWait.GetComponent<Text>().enabled = true;
             for(int i = 0; i<usersCount; i++)
@@ -312,13 +310,12 @@ public class DBController : MonoBehaviour
                     break;
                 } 
             }
-
         }
 
         if(!signInFailed)
         {
+            done = false;
             pictureTaken = false;
-            imageAlreadyTaken.GetComponent<Text>().enabled = false; 
             retname = addedName.text; 
             retmail = addedEmail.text; 
             wantedUser = usersCount;
