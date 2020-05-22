@@ -264,7 +264,7 @@ public class DBController : MonoBehaviour
     IEnumerator userSignUp()
     {   
         signInFailed = false;
-
+        
         if(string.IsNullOrWhiteSpace(addedEmail.text))      //check if there is an email inserted
         {
             //enter email
@@ -341,7 +341,7 @@ public class DBController : MonoBehaviour
             decodedTexture.LoadImage(bytes); //decode back to a texture to show 
             decodedTexture.Apply();
             userImage.texture = decodedTexture; 
-         
+            Debug.Log("users count: " + usersCount);
             
         }
     }
