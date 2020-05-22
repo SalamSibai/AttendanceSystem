@@ -6,4 +6,3 @@ The target platform is set to be PC, Mac & Linux Standalone. The build should be
 
 project's Firebase realtime database link: https://attendancesystem-motf.firebaseio.com/
 
-Resources: https://medium.com/@rotolonico/firebase-database-in-unity-with-rest-api-42f2cf6a2bbf
