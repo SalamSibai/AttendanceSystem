@@ -76,8 +76,8 @@ namespace SimpleFirebaseUnity
 
                             DontDestroyOnLoad(singleton);
 
-                            Debug.Log("[Firebase Manager] Instance '" + singleton +
-                                "' was generated in the scene with DontDestroyOnLoad.");
+//                            Debug.Log("[Firebase Manager] Instance '" + singleton +
+//                                "' was generated in the scene with DontDestroyOnLoad.");
                         }
                         else
                         {
