@@ -321,13 +321,13 @@ public class DBController : MonoBehaviour
             wantedUser = usersCount;
 
             NewUser(retname, retmail, retimage);
+            Debug.Log("New user added and is logged in");
             yield return new WaitForSeconds(1f); 
             signInWait.GetComponent<Text>().enabled = false;
             addUserCanvas.GetComponent<Canvas>().enabled = false;
             InformationCanvas.GetComponent<Canvas>().enabled = true; 
 
             wantedUser = usersCount;
-            Debug.Log ("Wanted user " + wantedUser);
 
             timeOfInOut = DateTime.Now.ToShortTimeString(); 
 
@@ -355,13 +355,7 @@ public class DBController : MonoBehaviour
         US.Add("timeStamp", "0");    //posts the timestamp 
         US.Add("login", true);
         firebaseQueue.AddQueueSet(firebase.Child(usersCount.ToString()), US, FirebaseParam.Empty.PrintSilent());
-        firebaseQueue.AddQueueSetTimeStamp(firebase.Child (usersCount.ToString(), true), "timeStamp");
-
-        Debug.Log("userCount " + usersCount);
-         
-        
-        Debug.Log("wanted user: " + wantedUser);
-        
+        firebaseQueue.AddQueueSetTimeStamp(firebase.Child (usersCount.ToString(), true), "timeStamp");               
     }
     
     ////////////////////////////////////////////////////////////////////////
@@ -371,7 +365,6 @@ public class DBController : MonoBehaviour
 
     IEnumerator Getdata(string email)       
     {
-        Debug.Log("usersCount: " + usersCount);
         loginWait.GetComponent<Text>().enabled = true;
         EmailMismatch.GetComponent<Text>().enabled = false;
         ErrorMsg.GetComponent<Text>().enabled = false;
@@ -389,7 +382,6 @@ public class DBController : MonoBehaviour
                 emailFound = true; 
                 Debug.Log("Successful retrieval");
                 wantedUser = i;
-                Debug.Log("wanted user index: " + wantedUser);
                 break;
             }         
         }
@@ -402,6 +394,7 @@ public class DBController : MonoBehaviour
             GetName(wantedUser.ToString()); 
             yield return new WaitForSeconds(2f);
 
+            Debug.Log("User name: " + retname);
 
             if(entry) //login is true
             {
@@ -410,7 +403,6 @@ public class DBController : MonoBehaviour
                 loginWait.GetComponent<Text>().enabled = false;
 
                 exit(); 
-
             }
             else
             {
@@ -440,6 +432,8 @@ public class DBController : MonoBehaviour
                 decodedTexture.Apply();
                 userImage.texture = decodedTexture; 
 
+                Debug.Log("Time of entry: " + timeOfInOut); 
+
             }
         }
 
@@ -458,7 +452,7 @@ public class DBController : MonoBehaviour
         emailFound = false;
 
         yield return new WaitForSeconds(2f);
-        Debug.Log("END OF COROUTINE");
+        Debug.Log("END OF PROCESS");
 
     }
 
