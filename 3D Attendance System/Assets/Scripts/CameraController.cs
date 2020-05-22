@@ -51,9 +51,9 @@ public class CameraController : MonoBehaviour
     {
         realLifeCanvas.GetComponent<Canvas>().enabled = false;
         realLifeCamera.SetActive(false); 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.2f);
         sceneCamera.SetActive(true);
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1f);
         if(controller.GetComponent<DBController>().pictureTaken)
         {
             signUpCanvas.GetComponent<Canvas>().enabled = true;
