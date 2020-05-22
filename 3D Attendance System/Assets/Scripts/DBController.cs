@@ -72,6 +72,7 @@ public class DBController : MonoBehaviour
     public InputField addedEmail;
     public Text notUniqueError; 
     public Text noEmailEntered; 
+    public Text noNameEntered;
     public Text noImageTaken; 
     public Text imageAlreadyTaken;
     public Text signInWait; 
@@ -104,6 +105,8 @@ public class DBController : MonoBehaviour
     public Button loginRequest; 
     public Button signUpRequest; 
     public Button CaptureRequest; 
+    public GameObject loginBack; 
+    public GameObject signUpBack; 
     public GameObject openCamera;
 
     void Start()
@@ -186,7 +189,7 @@ public class DBController : MonoBehaviour
         {
             ErrorMsg.GetComponent<Text>().enabled = false;
             loginRequest.GetComponent<Button>().enabled = false;  
-            StartCoroutine(Getdata(emailInput.text));
+            StartCoroutine(Getdata(emailInput.text.ToLower()));
         }
     }
 
@@ -197,6 +200,7 @@ public class DBController : MonoBehaviour
         welcomeCanvas.GetComponent<Canvas>().enabled = false;
         notUniqueError.GetComponent<Text>().enabled = false;
         noEmailEntered.GetComponent<Text>().enabled = false;
+        noNameEntered.GetComponent<Text>().enabled = false;
         noImageTaken.GetComponent<Text>().enabled = false;
         imageAlreadyTaken.GetComponent<Text>().enabled = false;
         addUserCanvas.GetComponent<Canvas>().enabled = true;
@@ -268,7 +272,7 @@ public class DBController : MonoBehaviour
     IEnumerator userSignUp()
     {   
         signInFailed = false;
-        
+        signUpBack.SetActive(false);
         if(string.IsNullOrWhiteSpace(addedEmail.text))      //check if there is an email inserted
         {
             //enter email
@@ -290,6 +294,15 @@ public class DBController : MonoBehaviour
         {
             noImageTaken.GetComponent<Text>().enabled = false;
         }
+        if(string.IsNullOrWhiteSpace(addedName.text))
+        {
+            signInFailed = true; 
+            noNameEntered.GetComponent<Text>().enabled = true;
+        }
+        else
+        {
+            noNameEntered.GetComponent<Text>().enabled = false;
+        }
 
         if(!signInFailed)
         {
@@ -297,6 +310,8 @@ public class DBController : MonoBehaviour
             noEmailEntered.GetComponent<Text>().enabled = false;
             imageAlreadyTaken.GetComponent<Text>().enabled = false;
             notUniqueError.GetComponent<Text>().enabled = false;
+            noNameEntered.GetComponent<Text>().enabled = false;
+
 
             signInWait.GetComponent<Text>().enabled = true;
             for(int i = 0; i<usersCount; i++)
@@ -321,7 +336,7 @@ public class DBController : MonoBehaviour
             done = false;
             pictureTaken = false;
             retname = addedName.text; 
-            retmail = addedEmail.text; 
+            retmail = addedEmail.text.ToLower(); 
             wantedUser = usersCount;
 
             NewUser(retname, retmail, retimage);
@@ -337,7 +352,7 @@ public class DBController : MonoBehaviour
 
             name.text = "Welcome " + addedName.text +"!"; 
             timeOfLogin.text ="Entry time: " + timeOfInOut;
-            loggedEmail.text = "Email: " + addedEmail.text;
+            loggedEmail.text = "Email: " + addedEmail.text.ToLower();
             bytes = Convert.FromBase64String(retimage);
 
             Texture2D decodedTexture = new Texture2D(1920,1080); 
@@ -348,6 +363,7 @@ public class DBController : MonoBehaviour
         }
 
         signUpRequest.GetComponent<Button>().enabled = true;
+        signUpBack.SetActive(true);
 
     }
 
@@ -370,7 +386,7 @@ public class DBController : MonoBehaviour
 
     IEnumerator Getdata(string email)       
     {
-
+        loginBack.SetActive(false);
         loginWait.GetComponent<Text>().enabled = true;
         EmailMismatch.GetComponent<Text>().enabled = false;
         ErrorMsg.GetComponent<Text>().enabled = false;
@@ -383,7 +399,7 @@ public class DBController : MonoBehaviour
         {
 
             Getmail(i.ToString());  //Gets the emails
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(3f);
 
             if (retmail == email && retmail != null )    //checks if the email "retmail" is equal to the email adress we are checking for && that emails exist in the db
             {
@@ -458,6 +474,7 @@ public class DBController : MonoBehaviour
         entry = false;
         emailFound = false;
         loginRequest.GetComponent<Button>().enabled = true;  
+        loginBack.SetActive(true);
 
         yield return new WaitForSeconds(2f);
         Debug.Log("END OF PROCESS");
@@ -474,7 +491,6 @@ public class DBController : MonoBehaviour
         //    Debug.Log("Successful Count retrieval");
 
             JsonData jsonvale = JsonMapper.ToObject(response.Text);
-            Debug.Log("Count: " + jsonvale.Count);
             usersCount = jsonvale.Count;
         });
     }
@@ -486,7 +502,8 @@ public class DBController : MonoBehaviour
 
             JsonData jsonvale = JsonMapper.ToObject(response.Text);
             retmail = (string) jsonvale["email"];
-            Debug.Log("retmail: " + retmail);
+            retmail = retmail.ToLower();
+            //Debug.Log("retmail: " + retmail);
         });
     }
     ////////////////////////////////////////////////////////////////////////
@@ -496,7 +513,6 @@ public class DBController : MonoBehaviour
         RestClient.Get($"https://attendancesystem-motf.firebaseio.com/attendees/"+id+".json").Then(response => {
             
             JsonData jsonvale = JsonMapper.ToObject(response.Text);
-            //Debug.Log("Logged in: " + jsonvale["login"]);
             entry = (bool) jsonvale["login"];
         });
     }

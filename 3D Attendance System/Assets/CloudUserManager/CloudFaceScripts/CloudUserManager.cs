@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Text;
 using System;
+using UnityEngine.UI;
 
 public class CloudUserManager : MonoBehaviour 
 {
@@ -14,7 +15,7 @@ public class CloudUserManager : MonoBehaviour
 	public bool checkGroupAtStart = true;
 
 	[Tooltip("GUI text used for debug and status messages.")]
-	public GUIText debugText;
+	public Text debugText;
 
 	// the face manager
 	private CloudFaceManager faceManager = null;
