@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI; 
 
 public class CameraController : MonoBehaviour
 {
@@ -10,11 +11,21 @@ public class CameraController : MonoBehaviour
     public GameObject realLifeCamera; 
     public Canvas realLifeCanvas; 
     public Canvas signUpCanvas; 
+    public Text pictureAlreadySaved;
+    public Text noPictureFound; 
 
     public void DeviceCamOn()
     {
-        signUpCanvas.GetComponent<Canvas>().enabled = false;
-        StartCoroutine(camSwitch());
+        if(!controller.GetComponent<DBController>().pictureTaken)
+        {
+            noPictureFound.GetComponent<Text>().enabled = false;
+            signUpCanvas.GetComponent<Canvas>().enabled = false;
+            StartCoroutine(camSwitch());
+        }
+        else
+        {
+            pictureAlreadySaved.GetComponent<Text>().enabled = true;
+        }
     }
 
     IEnumerator camSwitch()

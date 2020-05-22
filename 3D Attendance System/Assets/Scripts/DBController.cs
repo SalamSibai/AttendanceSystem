@@ -69,9 +69,12 @@ public class DBController : MonoBehaviour
     public InputField addedEmail;
     public Text notUniqueError; 
     public Text noEmailEntered; 
+    public Text noImageTaken; 
+    public Text imageAlreadyTaken;
     public Text signInWait; 
     public Text loginWait; 
     public RawImage userImage;
+
     ////////////////////////////////////////////////////////////////////////
     //Canavases
 
@@ -91,7 +94,6 @@ public class DBController : MonoBehaviour
     public RawImage background; 
     public AspectRatioFitter fit; 
     float scaleY; 
-    public Camera realLifeCam; 
 
     ////////////////////////////////////////////////////////////////////////
 
@@ -132,6 +134,8 @@ public class DBController : MonoBehaviour
     {
         if(!camAvailable)
         {
+            pictureTaken = true;
+            Debug.Log("device has no camera");
             return; 
         }
         
@@ -190,6 +194,7 @@ public class DBController : MonoBehaviour
         welcomeCanvas.GetComponent<Canvas>().enabled = false;
         notUniqueError.GetComponent<Text>().enabled = false;
         noEmailEntered.GetComponent<Text>().enabled = false;
+        noImageTaken.GetComponent<Text>().enabled = false;
         addUserCanvas.GetComponent<Canvas>().enabled = true;
 
     }
@@ -261,17 +266,35 @@ public class DBController : MonoBehaviour
     {   
         signInFailed = false;
 
+
         if(string.IsNullOrWhiteSpace(addedEmail.text))      //check if there is an email inserted
         {
             //enter email
             signInFailed = true;
             noEmailEntered.GetComponent<Text>().enabled = true;
             addedEmail.text = null; 
+        }
+        else
+        {
+            noEmailEntered.GetComponent<Text>().enabled = false;
+        }
 
+        if(!pictureTaken)
+        {
+            signInFailed = true; 
+            noImageTaken.GetComponent<Text>().enabled = true;
+
+        }
+        else
+        {
+            noImageTaken.GetComponent<Text>().enabled = false;
         }
 
         if(!signInFailed)
         {
+            noImageTaken.GetComponent<Text>().enabled = false;
+            noEmailEntered.GetComponent<Text>().enabled = false;
+
             signInWait.GetComponent<Text>().enabled = true;
             for(int i = 0; i<usersCount; i++)
             {
@@ -294,6 +317,8 @@ public class DBController : MonoBehaviour
 
         if(!signInFailed)
         {
+            pictureTaken = false;
+            imageAlreadyTaken.GetComponent<Text>().enabled = false; 
             retname = addedName.text; 
             retmail = addedEmail.text; 
             wantedUser = usersCount;

@@ -1515,6 +1515,8 @@ MonoBehaviour:
   addedEmail: {fileID: 1643293787}
   notUniqueError: {fileID: 1054498511}
   noEmailEntered: {fileID: 1431496427}
+  noImageTaken: {fileID: 1474712745}
+  imageAlreadyTaken: {fileID: 1669541977}
   signInWait: {fileID: 1314200518}
   loginWait: {fileID: 134033810}
   userImage: {fileID: 1466934670}
@@ -1525,7 +1527,6 @@ MonoBehaviour:
   welcomeCanvas: {fileID: 1370951706}
   background: {fileID: 1318410357}
   fit: {fileID: 1318410359}
-  realLifeCam: {fileID: 1946079986}
 --- !u!4 &473468824
 Transform:
   m_ObjectHideFlags: 0
@@ -2402,7 +2403,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0.29296875, y: 0.03125, z: 0.02734375, w: -0.03125}
+  m_BoundingSphereOverride: {x: -0.02734375, y: 0, z: 6, w: 6}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -2534,6 +2535,8 @@ MonoBehaviour:
   realLifeCamera: {fileID: 1946079981}
   realLifeCanvas: {fileID: 1808708126}
   signUpCanvas: {fileID: 1108534940}
+  pictureAlreadySaved: {fileID: 1669541977}
+  noPictureFound: {fileID: 1474712745}
 --- !u!4 &713384995
 Transform:
   m_ObjectHideFlags: 0
