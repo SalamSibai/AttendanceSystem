@@ -53,7 +53,7 @@ public class DBController : MonoBehaviour
     bool signInFailed;
     public bool pictureTaken;
     public bool done; 
-
+    public bool noCamera; 
     ////////////////////////////////////////////////////////////////////////
     //Gameobject references
     public GameObject panel; 
@@ -104,16 +104,20 @@ public class DBController : MonoBehaviour
     public Button loginRequest; 
     public Button signUpRequest; 
     public Button CaptureRequest; 
+    public GameObject openCamera;
 
     void Start()
     {
-        //Camera Capture code
+        //Get List Count
+        GetCount();
 
+        //Camera Capture code        
         defaultBackground = background.texture;
         WebCamDevice[] devices = WebCamTexture.devices; 
 
         if(devices.Length == 0 )
         {
+            openCamera.SetActive(false);
             camAvailable = false;
             return; 
         }
@@ -129,15 +133,14 @@ public class DBController : MonoBehaviour
         deviceCam.Play();
         background.texture = deviceCam; 
         camAvailable = true;
-        //Get List Count
-        GetCount();
     }
 
     void Update()
     {
         if(!camAvailable)
         {
-            pictureTaken = true;
+            noCamera = true;
+
             Debug.Log("device has no camera");
             return; 
         }
@@ -278,7 +281,7 @@ public class DBController : MonoBehaviour
             noEmailEntered.GetComponent<Text>().enabled = false;
         }
 
-        if(!done)
+        if(!done && !noCamera)
         {
             signInFailed = true; 
             noImageTaken.GetComponent<Text>().enabled = true;
@@ -372,7 +375,7 @@ public class DBController : MonoBehaviour
         EmailMismatch.GetComponent<Text>().enabled = false;
         ErrorMsg.GetComponent<Text>().enabled = false;
         GetCount(); 
-        Debug.Log("users count: " + usersCount);
+        //Debug.Log("users count: " + usersCount);
 
         yield return new WaitForSeconds(2f); 
 
@@ -394,8 +397,8 @@ public class DBController : MonoBehaviour
         if(emailFound)
         {
             GetLogin(wantedUser.ToString());
-            
             yield return new WaitForSeconds(2f);
+
             GetName(wantedUser.ToString()); 
             yield return new WaitForSeconds(2f);
 
@@ -471,7 +474,7 @@ public class DBController : MonoBehaviour
         //    Debug.Log("Successful Count retrieval");
 
             JsonData jsonvale = JsonMapper.ToObject(response.Text);
-        //    Debug.Log("Count: " + jsonvale.Count);
+            Debug.Log("Count: " + jsonvale.Count);
             usersCount = jsonvale.Count;
         });
     }
