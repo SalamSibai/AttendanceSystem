@@ -13,7 +13,7 @@ To open the project:
 
 To compile the project:
 
-Once the project is open, navigate to the "Game" tab. By default, the first time a project is open, the aspect ratio is set to "free aspect ratio". In the "Game" tab window, the aspect ratio should be changed to 16:9. Save changes and press the "Play" button on the top center of the screen. The project is now executing and can be tested manually in the "Game" tab.
+Once the project is open, navigate to the "Game" tab. By default, the first time a project is open, the aspect ratio is set to "free aspect ratio". In the "Game" tab window, the aspect ratio should be changed to 16:9. Save changes and press the "Play" button on the top center of the screen. The project is now executing and can be tested manually in the "Game" tab. During testing, the "Console" tab will include messages that indicate the execution of specific actions. 
 
 To build the project:
 
