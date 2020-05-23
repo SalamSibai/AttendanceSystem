@@ -21,3 +21,5 @@ From the open Unity project, navigate to File > Build Settings > Build > Select 
 
 project's Firebase realtime database link: https://attendancesystem-motf.firebaseio.com/
 
+Resource: https://medium.com/@rotolonico/firebase-database-in-unity-with-rest-api-42f2cf6a2bbf
+
