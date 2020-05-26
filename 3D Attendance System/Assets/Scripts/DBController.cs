@@ -1,26 +1,26 @@
-﻿//Structure goes like this: 
+﻿/* Structure goes like this: 
 
-    //Login: 
-    // 1) User writes email address in email section
-    // 2) Entries from db are retrieved. Matching between email addresses in the db & the entered email starts. 
-        //if found, 
-            //We check the boolean value of Entry.
-                //if false, 
-                    //information of the user are printed as an entry, Entry is set to true, timestamp of entry is saved, a button that allows a sign out is displayed. * 
-                        //if that sign out button is pressed: 
-                            //we set the value of that specific user's boolean entry to false, a thank you for attending msg appears.
-                //else if true
-                    //Entry is set to false, a "Thank you for attending" msg appears, timestamp of exit is saved.
-        //Else if not found 
-            //Display msg: No user with email found 
+    Login: 
+    1) User writes email address in email section
+    2) Entries from db are retrieved. Matching between email addresses in the db & the entered email starts. 
+        if found, 
+            We check the boolean value of Entry.
+                if false, 
+                    information of the user are printed as an entry, Entry is set to true, timestamp of entry is saved, a button that allows a sign out is displayed. * 
+                        if that sign out button is pressed: 
+                            we set the value of that specific user's boolean entry to false, a thank you for attending msg appears.
+                else if true
+                    Entry is set to false, a "Thank you for attending" msg appears, timestamp of exit is saved.
+        Else if not found 
+            Display msg: No user with email found 
 
 
-    //User Sign up:
-    //1) User is asked to input their information in specific input fields. (WITH A UNIQUE EMAIL THAT HASEN'T BEEN REGISTERED)
-    //2) The values of the entered feilds (name, email, & image) are sent to the database, with atomatically setting a timestamp and automatically setting Entry to true.
+    User Sign up:
+    1) User is asked to input their information in specific input fields. (WITH A UNIQUE EMAIL THAT HASEN'T BEEN REGISTERED)
+    2) The values of the entered feilds (name, email, & image) are sent to the database, with atomatically setting a timestamp and automatically setting Entry to true.
 
-    //Buttons that trigger posting and retreiving data from the database are disabled once clicked and until the proccess is done, to avoid multiple requests.
-    //Few seconds are needed for retrieving information from the database since the database is traversed in a linear manner. the timers should be increased for larger amounts of data.
+    Buttons that trigger posting and retreiving data from the database are disabled once clicked and until the proccess is done, to avoid multiple requests.
+    Few seconds are needed for retrieving information from the database since the database is traversed in a linear manner. the timers should be increased for larger amounts of data.*/
 
 using SimpleFirebaseUnity;
 using System;
@@ -40,7 +40,6 @@ public class DBController : MonoBehaviour
     FirebaseQueue firebaseQueue = new FirebaseQueue(true, 3, 1f);  
     User tempget = new User();  //temporary retrieved users
 
-    ////////////////////////////////////////////////////////////////////////
     //Needed variables
 
     bool entry; //Logged in information
@@ -54,11 +53,11 @@ public class DBController : MonoBehaviour
     public bool pictureTaken;
     public bool done; 
     public bool noCamera; 
-    ////////////////////////////////////////////////////////////////////////
+
     //Gameobject references
+
     public GameObject panel; 
 
-    ////////////////////////////////////////////////////////////////////////
     //Text fields & input fields 
 
     public Text ErrorMsg; 
@@ -79,7 +78,6 @@ public class DBController : MonoBehaviour
     public Text loginWait; 
     public RawImage userImage;
 
-    ////////////////////////////////////////////////////////////////////////
     //Canavases
 
     public Canvas emailInsertCanvas; 
@@ -88,7 +86,6 @@ public class DBController : MonoBehaviour
     public Canvas addUserCanvas;
     public Canvas welcomeCanvas; 
 
-    ////////////////////////////////////////////////////////////////////////
     //picture info
 
     byte[] bytes;
@@ -99,7 +96,6 @@ public class DBController : MonoBehaviour
     public AspectRatioFitter fit; 
     float scaleY; 
 
-    ////////////////////////////////////////////////////////////////////////
     //Buttons
 
     public Button loginRequest; 
@@ -165,9 +161,7 @@ public class DBController : MonoBehaviour
         background.rectTransform.localEulerAngles = new Vector3(0,0, orient);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////
+
     //Button clicks actions: 
 
     //Open Login Page
@@ -177,7 +171,6 @@ public class DBController : MonoBehaviour
         emailInsertCanvas.GetComponent<Canvas>().enabled = true; 
     }
 
-    ////////////////////////////////////////////////////////////////////////
     //Submit login email
     public void Login() 
     {
@@ -193,7 +186,6 @@ public class DBController : MonoBehaviour
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
     //Open sifnUp page
     public void addUser()  
     {
@@ -206,7 +198,6 @@ public class DBController : MonoBehaviour
         addUserCanvas.GetComponent<Canvas>().enabled = true;
     }
 
-    ////////////////////////////////////////////////////////////////////////
     //Capture Button
     public void Capture()
     {
@@ -214,7 +205,6 @@ public class DBController : MonoBehaviour
         StartCoroutine(TakePicture());
     }
     
-    ////////////////////////////////////////////////////////////////////////
     //Submit new user
     public void SubmitNewUser() 
     {
@@ -222,7 +212,6 @@ public class DBController : MonoBehaviour
         StartCoroutine(userSignUp());
     }
 
-    ////////////////////////////////////////////////////////////////////////
     //The back button on the information screen
     public void LoginBackButton() 
     {
@@ -232,16 +221,12 @@ public class DBController : MonoBehaviour
         BackToWelcome();
     }
 
-    ////////////////////////////////////////////////////////////////////////
     //The exit button on the information screen
     public void exit()  
     {
         StartCoroutine(OnExit());
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////
     //Picture capture
 
     IEnumerator TakePicture()
@@ -264,9 +249,6 @@ public class DBController : MonoBehaviour
         CaptureRequest.GetComponent<Button>().enabled = true;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////
     //Sign up
 
     IEnumerator userSignUp()
@@ -394,11 +376,12 @@ public class DBController : MonoBehaviour
         //Debug.Log("users count: " + usersCount);
 
         yield return new WaitForSeconds(2f); 
+        firebase.GetValue(FirebaseParam.Empty.OrderByValue().StartAt(email));
 
         for (int i = 0; i < usersCount ; i++)
         {
 
-            Getmail(i.ToString());  //Gets the emails
+            //Getmail(i.ToString());  //Gets the emails
             yield return new WaitForSeconds(3f);
 
             if (retmail == email && retmail != null )    //checks if the email "retmail" is equal to the email adress we are checking for && that emails exist in the db
@@ -480,9 +463,6 @@ public class DBController : MonoBehaviour
         Debug.Log("END OF PROCESS");
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////
     //Data retreival from database    
 
     private void GetCount()     //returns the number of entries in the database
@@ -535,9 +515,6 @@ public class DBController : MonoBehaviour
         });
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////
     //Data uploaded to database
 
     private void UpdateTime(int id)
@@ -551,9 +528,7 @@ public class DBController : MonoBehaviour
         firebaseQueue.AddQueueUpdate(firebase.Child (id.ToString(), true), "{\"login\": true}");
         Debug.Log("changed to true successfuly");
     }
-    ////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////
+
     //Exit 
 
     public void BackToWelcome()
@@ -593,9 +568,6 @@ public class DBController : MonoBehaviour
         Debug.Log("Exit done");
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////
     //User Class
 
     public class User // user class
