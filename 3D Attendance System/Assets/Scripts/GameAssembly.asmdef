@@ -1,11 +1,7 @@
 {
-    "name": "testS",
-    "references": [
-        "GUID:b0705df638fad5f4c9227aa40c8aa5bf"
-    ],
-    "optionalUnityReferences": [
-        "TestAssemblies"
-    ],
+    "name": "Scripts",
+    "references": [],
+    "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

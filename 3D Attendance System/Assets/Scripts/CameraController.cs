@@ -24,7 +24,6 @@ public class CameraController : MonoBehaviour
         }
         else if(controller.GetComponent<DBController>().done)
         {
-           
             pictureAlreadySaved.GetComponent<Text>().enabled = true;
         }
     }

@@ -192,8 +192,10 @@ namespace SimpleFirebaseUnity
 
         protected void StartNextCommand()
         {
-            head = head.next;
-            Start();
+        
+                head = head.next;
+                Start();
+
         }
 
 

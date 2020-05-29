@@ -1,5 +1,4 @@
 ﻿/* Structure goes like this: 
-
     Login: 
     1) User writes email address in email section
     2) Entries from db are retrieved. Matching between email addresses in the db & the entered email starts. 
@@ -13,12 +12,9 @@
                     Entry is set to false, a "Thank you for attending" msg appears, timestamp of exit is saved.
         Else if not found 
             Display msg: No user with email found 
-
-
     User Sign up:
     1) User is asked to input their information in specific input fields. (WITH A UNIQUE EMAIL THAT HASEN'T BEEN REGISTERED)
     2) The values of the entered feilds (name, email, & image) are sent to the database, with atomatically setting a timestamp and automatically setting Entry to true.
-
     Buttons that trigger posting and retreiving data from the database are disabled once clicked and until the proccess is done, to avoid multiple requests.
     Few seconds are needed for retrieving information from the database since the database is traversed in a linear manner. the timers should be increased for larger amounts of data.*/
 
@@ -42,10 +38,10 @@ public class DBController : MonoBehaviour
 
     //Needed variables
 
-    bool entry; //Logged in information
+    public bool entry; //Logged in information
     string retmail; //returned email
     string retname; //returned name
-    string retimage; //returned image
+    public string retimage; //returned image
     string timeOfInOut; //timestamp
     int wantedUser; //user index in database
     bool emailFound; 
@@ -201,8 +197,11 @@ public class DBController : MonoBehaviour
     //Capture Button
     public void Capture()
     {
-        CaptureRequest.GetComponent<Button>().enabled = false;
-        StartCoroutine(TakePicture());
+        if(pictureTaken)
+        {
+            CaptureRequest.GetComponent<Button>().enabled = false;
+            StartCoroutine(TakePicture());
+        }
     }
     
     //Submit new user
@@ -216,7 +215,7 @@ public class DBController : MonoBehaviour
     public void LoginBackButton() 
     {
         emailFound = false; 
-        entry = false;
+        //entry = false;
         InformationCanvas.GetComponent<Canvas>().enabled = false; 
         BackToWelcome();
     }
@@ -229,7 +228,7 @@ public class DBController : MonoBehaviour
 
     //Picture capture
 
-    IEnumerator TakePicture()
+    public IEnumerator TakePicture()
     {
         noImageTaken.GetComponent<Text>().enabled = false;
         panel.GetComponent<Animator>().SetTrigger("Capture");
@@ -241,12 +240,17 @@ public class DBController : MonoBehaviour
         photo.SetPixels(deviceCam.GetPixels());
         photo.Apply();
         
-        bytes = photo.EncodeToPNG(); 
-        retimage = Convert.ToBase64String(bytes); 
+        pictureConversion(photo);
 
         Debug.Log("picture captured");
         done = true;
         CaptureRequest.GetComponent<Button>().enabled = true;
+    }
+
+    void pictureConversion(Texture2D pic)
+    {
+        bytes = pic.EncodeToPNG(); 
+        retimage = Convert.ToBase64String(bytes); 
     }
 
     //Sign up
@@ -294,12 +298,15 @@ public class DBController : MonoBehaviour
             notUniqueError.GetComponent<Text>().enabled = false;
             noNameEntered.GetComponent<Text>().enabled = false;
 
-
             signInWait.GetComponent<Text>().enabled = true;
+
+            GetCount();
+            yield return new WaitForSeconds(5f);
+
             for(int i = 0; i<usersCount; i++)
             {
                 Getmail(i.ToString());
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(2f);
 
                 if(retmail == addedEmail.text)
                 {
@@ -319,16 +326,19 @@ public class DBController : MonoBehaviour
             pictureTaken = false;
             retname = addedName.text; 
             retmail = addedEmail.text.ToLower(); 
-            wantedUser = usersCount;
+            
 
             NewUser(retname, retmail, retimage);
+            entry = true;
+            wantedUser = usersCount; 
             Debug.Log("New user added and is logged in");
+            Debug.Log("entry: " + entry);
             yield return new WaitForSeconds(1f); 
             signInWait.GetComponent<Text>().enabled = false;
             addUserCanvas.GetComponent<Canvas>().enabled = false;
             InformationCanvas.GetComponent<Canvas>().enabled = true; 
 
-            wantedUser = usersCount;
+            
 
             timeOfInOut = DateTime.Now.ToShortTimeString(); 
 
@@ -361,9 +371,6 @@ public class DBController : MonoBehaviour
         firebaseQueue.AddQueueSetTimeStamp(firebase.Child (usersCount.ToString(), true), "timeStamp");               
     }
     
-    ////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////
     //Login
 
     IEnumerator Getdata(string email)       
@@ -381,7 +388,7 @@ public class DBController : MonoBehaviour
         for (int i = 0; i < usersCount ; i++)
         {
 
-            //Getmail(i.ToString());  //Gets the emails
+            Getmail(i.ToString());  //Gets the emails
             yield return new WaitForSeconds(3f);
 
             if (retmail == email && retmail != null )    //checks if the email "retmail" is equal to the email adress we are checking for && that emails exist in the db
@@ -417,7 +424,7 @@ public class DBController : MonoBehaviour
                 GetImage(wantedUser.ToString());
                 yield return new WaitForSeconds(2f);
 
-                ChangeLogin(wantedUser);  
+                ChangeLogin();  
                 UpdateTime(wantedUser);
 
                 yield return new WaitForSeconds(1f);    //needed for name retrieval 
@@ -454,7 +461,7 @@ public class DBController : MonoBehaviour
             Debug.Log("email unavailable");
         }
 
-        entry = false;
+        //entry = false;
         emailFound = false;
         loginRequest.GetComponent<Button>().enabled = true;  
         loginBack.SetActive(true);
@@ -523,10 +530,20 @@ public class DBController : MonoBehaviour
         firebaseQueue.AddQueueSetTimeStamp(firebase.Child (id.ToString(), true), "timeStamp");
     }
 
-    private void ChangeLogin(int id)
+    public void ChangeLogin()
     {
-        firebaseQueue.AddQueueUpdate(firebase.Child (id.ToString(), true), "{\"login\": true}");
-        Debug.Log("changed to true successfuly");
+        if(!entry)
+        {
+            firebaseQueue.AddQueueUpdate(firebase.Child (wantedUser.ToString(), true), "{\"login\": true}");
+            Debug.Log("changed to true successfuly");
+            entry = true;
+        }
+
+        else 
+        {
+            firebaseQueue.AddQueueUpdate(firebase.Child (wantedUser.ToString(), true), "{\"login\": false}");
+            entry = false;
+        }
     }
 
     //Exit 
@@ -547,13 +564,14 @@ public class DBController : MonoBehaviour
         firebaseQueue.ForceClearQueue();
         InformationCanvas.GetComponent<Canvas>().enabled = false;
         emailInsertCanvas.GetComponent<Canvas>().enabled = false;
+        addedEmail.text = null; 
+        addedName.text = null; 
 
         thankYouCanvas.GetComponent<Canvas>().enabled = true;
         
         thankYouText.text = "Thank you for attending, " + retname +"!"; 
 
-        firebaseQueue.AddQueueUpdate(firebase.Child (wantedUser.ToString(), true), "{\"login\": false}");
-        entry = false;
+        ChangeLogin(); 
 
         yield return new WaitForSeconds (1f); 
         firebaseQueue.ForceClearQueue();
